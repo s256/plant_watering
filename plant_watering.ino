@@ -47,8 +47,8 @@ RTC_DATA_ATTR struct Measurement // Data structure
     time_t time;
 };
 
-QList<Measurement> queue; // Queue
-HTTPClient http;          // HTTPClient user for transfering data to InfluxDB
+RTC_DATA_ATTR QList<Measurement> queue; // Queue
+HTTPClient http;                        // HTTPClient user for transfering data to InfluxDB
 
 // OTA Stuff
 
