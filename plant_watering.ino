@@ -14,6 +14,7 @@ int water_sensor_pin_in = 27;
 int moisture_sensor = 35;
 int soilMoistureValue = 0;
 int soilmoisturepercent = 0;
+int water_level = 0;
 
 #include <QList.h>
 #include "custom.h"
@@ -136,8 +137,8 @@ void loop()
     // obtain measurments from the sensor
 
     queue.push_back(m);
-    Serial.print("Queue Size: ")
-        Serial.println(queue.size());
+    Serial.print("Queue Size: ");
+    Serial.println(queue.size());
     if (queue.size() % DATA_TRANSFER_BATCH_SIZE == 0)
     {
         transferData();
