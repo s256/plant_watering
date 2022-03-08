@@ -10,10 +10,10 @@ const long long FW_VERSION = 202203082255; // YEARmonthDAYhourMINUTE
 const int uS_TO_S_FACTOR = 1000000; // Conversion factor for micro seconds to seconds
 const int TIME_TO_SLEEP = 300;      // Time ESP32 will go to sleep (in seconds) (300 default)
 
-const int WATERING_DURATION = 1000 * 10; // defaults to 1000 * 60 * 1 -> 1 minute
+const int WATERING_DURATION = 1000 * 60 * 1; // defaults to 1000 * 60 * 1 -> 1 minute
 
 // Data Batch size
-const int DATA_TRANSFER_BATCH_SIZE = 1; // transfer after this number of items have been collected
+const int DATA_TRANSFER_BATCH_SIZE = 2; // transfer after this number of items have been collected
 
 RTC_DATA_ATTR int bootCount = 0;
 
