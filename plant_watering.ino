@@ -120,6 +120,8 @@ void loop()
     long now = esp_log_timestamp();
     Serial.println("Watering System");
     soilMoistureValue = analogRead(moisture_sensor);
+    delay(500);
+    soilMoistureValue = analogRead(moisture_sensor); // read twice, test for better accuracy
     Serial.print("Soil Sensor: ");
     Serial.println(soilMoistureValue);
     Serial.println("");
