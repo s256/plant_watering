@@ -8,7 +8,7 @@ const char *ntpServer = "pool.ntp.org";
 const long long FW_VERSION = 202203082249; // YEARmonthDAYhourMINUTE
 // Sleep and Watering durations
 const int uS_TO_S_FACTOR = 1000000; // Conversion factor for micro seconds to seconds
-const int TIME_TO_SLEEP = 30;       // Time ESP32 will go to sleep (in seconds) (300 default)
+const int TIME_TO_SLEEP = 300;      // Time ESP32 will go to sleep (in seconds) (300 default)
 
 const int WATERING_DURATION = 1000 * 10; // defaults to 1000 * 60 * 1 -> 1 minute
 
