@@ -1,0 +1,11 @@
+#define WIFI_SSID "my_fucking_wifi_name_is_none_of_your_business"
+#define WIFI_PASSWORD "pretty-damn-safe-password"
+#define INFLUXDB_REST_SERVICE_URL "http://foo:bar@10.10.0.1:8086/write?db=foobar"
+#define MQTT_SERVER "10.10.0.1"
+#define OTA_SERVER "ota.local.domain"
+#define LOCATION "Bar"
+// Other settings
+#define TIMESERVER "europe.pool.ntp.org"
+
+#define WIFI_RECONNECT_TRY_MAX 10 
+#define WIFI_RECONNECT_DELAY_MS 500
