@@ -5,7 +5,7 @@ const int daylightOffset_sec = 3600;
 const long gmtOffset_sec = 3600;
 const char *ntpServer = "pool.ntp.org";
 // Firmware Version used for OTA
-const long long FW_VERSION = 202203082255; // YEARmonthDAYhourMINUTE
+const long long FW_VERSION = 202203082355; // YEARmonthDAYhourMINUTE
 // Sleep and Watering durations
 const int uS_TO_S_FACTOR = 1000000; // Conversion factor for micro seconds to seconds
 const int TIME_TO_SLEEP = 300;      // Time ESP32 will go to sleep (in seconds) (300 default)
@@ -119,16 +119,15 @@ void loop()
     digitalWrite(relay_pin, HIGH);
     long now = esp_log_timestamp();
     Serial.println("Watering System");
-    soilMoistureValue = analogRead(moisture_sensor);
-    delay(500);
-    soilMoistureValue = analogRead(moisture_sensor); // read twice, test for better accuracy
+    // obtain measurements from the sensors
+    soilMoistureValue = get_moisture(moisture_sensor);
     Serial.print("Soil Sensor: ");
     Serial.println(soilMoistureValue);
     Serial.println("");
     Serial.print("Water Level Sensor: ");
-    Serial.println(digitalRead(water_sensor_pin_in));
-    soilmoisturepercent = map(soilMoistureValue, AirValue, WaterValue, 0, 100);
     water_level = digitalRead(water_sensor_pin_in);
+    Serial.println(water_sensor_pin_in);
+    soilmoisturepercent = map(soilMoistureValue, AirValue, WaterValue, 0, 100);
     struct Measurement m;
     m.moisture = soilmoisturepercent;
     m.waterlevel = water_level;
@@ -138,17 +137,20 @@ void loop()
     if ((soilmoisturepercent < 35) && (water_level == 1)) // if Soil is too dry, pump water for some duration
     {
         Serial.println("Soil is too dry, start watering");
+        m.pump = 1;
+        queue.push_back(m); // save the current values
+        m.pump = 0;
         digitalWrite(relay_pin, LOW);
         delay(WATERING_DURATION);
-        m.pump = 1;
     }
-    else
-    {
-        m.pump = 0;
-    }
-    // obtain measurements from the sensor
-
-    queue.push_back(m);
+    m.pump = 0;
+    soilMoistureValue = get_moisture(moisture_sensor);
+    soilmoisturepercent = map(soilMoistureValue, AirValue, WaterValue, 0, 100);
+    m.moisture = soilmoisturepercent;
+    water_level = digitalRead(water_sensor_pin_in);
+    m.waterlevel = water_level;
+    time(&m.time);
+    queue.push_back(m); // if the pump was not on, this is our only data point, if the pump was one, we can check for how long the pump was running
     Serial.print("Queue Size: ");
     Serial.println(queue.size());
     if (queue.size() % DATA_TRANSFER_BATCH_SIZE == 0)
@@ -160,7 +162,19 @@ void loop()
     Serial.println("Sleeping...."); // next cycle should be some time in future, to give earth some time to consume water
     esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
     delay(500);
-    esp_light_sleep_start();
+    esp_deep_sleep_start();
+}
+
+// #################################
+// Read Sensors
+// #################################
+int get_moisture(int sensor_pin)
+{
+    int analog_value = 0;
+    analog_value = analogRead(sensor_pin);
+    delay(200);
+    analog_value = analogRead(sensor_pin); // read twice, test for better accuracy
+    return analog_value;
 }
 
 /**
