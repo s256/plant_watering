@@ -4,8 +4,17 @@ const int WaterValue = 1350; // replace the value from calibration in water
 const int daylightOffset_sec = 3600;
 const long gmtOffset_sec = 3600;
 const char *ntpServer = "pool.ntp.org";
+// Firmware Version used for OTA
+const String FW_VERSION = "202203081720"; // YEARmonthDAYhourMINUTE
 
-const char FW_VERSION[50] = "202203070048";
+// Sleep and Watering durations
+const int uS_TO_S_FACTOR = 1000000; // Conversion factor for micro seconds to seconds
+const int TIME_TO_SLEEP = 30;       // Time ESP32 will go to sleep (in seconds) (300 default)
+
+const int WATERING_DURATION = 1000 * 10; // defaults to 1000 * 60 * 1 -> 1 minute
+
+// Data Batch size
+const int DATA_TRANSFER_BATCH_SIZE = 1; // transfer after this number of items have been collected
 
 RTC_DATA_ATTR int bootCount = 0;
 
