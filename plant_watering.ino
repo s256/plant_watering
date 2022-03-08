@@ -121,20 +121,18 @@ void loop()
     m.moisture = soilmoisturepercent;
     m.waterlevel = water_level;
     time(&m.time);
-    // Serial.println(soilmoisturepercent);
-    if (soilmoisturepercent < 35) // if Soil is too dry, pump water for some duration
+    if ((soilmoisturepercent < 35) && (water_level == 1)) // if Soil is too dry, pump water for some duration
     {
         Serial.println("Soil is too dry, start watering");
         digitalWrite(relay_pin, LOW);
-        // delay(WATERING_DURATION);
-        delay(500);
+        delay(WATERING_DURATION);
         m.pump = 1;
     }
     else
     {
         m.pump = 0;
     }
-    // obtain measurments from the sensor
+    // obtain measurements from the sensor
 
     queue.push_back(m);
     Serial.print("Queue Size: ");
