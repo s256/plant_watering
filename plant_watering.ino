@@ -159,7 +159,8 @@ void loop()
     digitalWrite(relay_pin, HIGH);  // make sure pump is turned off, befor next cycle
     Serial.println("Sleeping...."); // next cycle should be some time in future, to give earth some time to consume water
     esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
-    esp_deep_sleep_start();
+    delay(500);
+    esp_light_sleep_start();
 }
 
 /**
