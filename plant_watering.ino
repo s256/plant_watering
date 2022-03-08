@@ -5,7 +5,7 @@ const int daylightOffset_sec = 3600;
 const long gmtOffset_sec = 3600;
 const char *ntpServer = "pool.ntp.org";
 // Firmware Version used for OTA
-const long long FW_VERSION = 202203082249; // YEARmonthDAYhourMINUTE
+const long long FW_VERSION = 202203082255; // YEARmonthDAYhourMINUTE
 // Sleep and Watering durations
 const int uS_TO_S_FACTOR = 1000000; // Conversion factor for micro seconds to seconds
 const int TIME_TO_SLEEP = 300;      // Time ESP32 will go to sleep (in seconds) (300 default)
