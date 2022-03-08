@@ -20,5 +20,5 @@ I copied the code from the [official espressif OTA examples at github](https://g
 
 
 ## Sources
-[ESP32 influxdb linked lists](https://github.com/AlbertWeichselbraun)
-[ESP32 OTA by espressif](https://github.com/espressif/arduino-esp32/blob/master/libraries/Update/examples/AWS_S3_OTA_Update/AWS_S3_OTA_Update.ino)
+* [ESP32 influxdb linked lists](https://github.com/AlbertWeichselbraun)
+* [ESP32 OTA by espressif](https://github.com/espressif/arduino-esp32/blob/master/libraries/Update/examples/AWS_S3_OTA_Update/AWS_S3_OTA_Update.ino)
