@@ -437,7 +437,8 @@ boolean transferBatch()
     for (int i = endIndex; i >= startIndex; i--)
     {
         struct Measurement m = queue[i];
-        oss << "plants,sensor=moisture,host=" << WiFi.macAddress().c_str() << ",location=" << m.location << " moisture=" << m.moisture << ",pump=" << m.pump << " ,water_level=" << m.waterlevel << m.time << "000000000\n"; // we need to add 9 zeros to the time, since InfluxDB expects ns.
+        oss << "plants,sensor=moisture,host=" << WiFi.macAddress().c_str() << ",location=" << m.location << " moisture=" << m.moisture << ",pump=" << m.pump
+            << ",water_level=" << m.waterlevel << " " << m.time << "000000000\n"; // we need to add 9 zeros to the time, since InfluxDB expects ns.
     }
     int httpResponseCode = http.POST(oss.str().c_str());
     http.end();
