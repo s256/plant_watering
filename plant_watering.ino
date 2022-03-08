@@ -130,6 +130,8 @@ void loop()
     m.moisture = soilmoisturepercent;
     m.waterlevel = water_level;
     time(&m.time);
+    Serial.print("Soil Moisture: ");
+    Serial.println(soilmoisturepercent + " %");
     if ((soilmoisturepercent < 35) && (water_level == 1)) // if Soil is too dry, pump water for some duration
     {
         Serial.println("Soil is too dry, start watering");
