@@ -5,8 +5,7 @@ const int daylightOffset_sec = 3600;
 const long gmtOffset_sec = 3600;
 const char *ntpServer = "pool.ntp.org";
 // Firmware Version used for OTA
-const String FW_VERSION = "202203081720"; // YEARmonthDAYhourMINUTE
-
+const long long FW_VERSION = 202203081838; // YEARmonthDAYhourMINUTE
 // Sleep and Watering durations
 const int uS_TO_S_FACTOR = 1000000; // Conversion factor for micro seconds to seconds
 const int TIME_TO_SLEEP = 30;       // Time ESP32 will go to sleep (in seconds) (300 default)
@@ -62,7 +61,9 @@ HTTPClient http;                        // HTTPClient user for transfering data 
 // OTA Stuff
 
 long contentLength = 0;
+long long firmware = 0;
 bool isValidContentType = false;
+bool isNewFirmware = false;
 
 String host = OTA_SERVER; // Host => OTA Server Path
 int port = 80;            // Non https. For HTTPS 443. As of today, HTTPS doesn't work.
@@ -321,6 +322,26 @@ void execOTA()
                     isValidContentType = true;
                 }
             }
+
+            // Next, the firmware version
+            if (line.startsWith("X-Firmware: "))
+            {
+                firmware = atoll((getHeaderValue(line, "X-Firmware: ")).c_str());
+                Serial.print("Got ");
+                Serial.print(firmware);
+                Serial.print(" version. Currently running: ");
+                Serial.print(FW_VERSION);
+                Serial.println();
+                if (firmware > FW_VERSION)
+                {
+                    Serial.println("Firmware is new. Starting Update...");
+                    isNewFirmware = true;
+                }
+                else
+                {
+                    Serial.println("Firmware is not new, skipping Update.");
+                }
+            }
         }
     }
     else
@@ -334,10 +355,10 @@ void execOTA()
     }
 
     // Check what is the contentLength and if content type is `application/octet-stream`
-    Serial.println("contentLength : " + String(contentLength) + ", isValidContentType : " + String(isValidContentType));
+    Serial.println("contentLength : " + String(contentLength) + ", isValidContentType : " + String(isValidContentType) + ", isNewFirmware : " + String(isNewFirmware));
 
     // check contentLength and content type
-    if (contentLength && isValidContentType)
+    if (contentLength && isValidContentType && isNewFirmware)
     {
         // Check if there is enough to OTA Update
         bool canBegin = Update.begin(contentLength);
@@ -390,8 +411,8 @@ void execOTA()
     }
     else
     {
-        Serial.println("There was no content in the response");
-        // espClient.flush();
+        Serial.println("There was no content in the response or Firmware is up to date");
+        espClient.flush();
     }
 }
 
