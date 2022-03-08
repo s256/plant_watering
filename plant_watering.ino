@@ -46,7 +46,7 @@ WiFiClient espClient;
 String wifiMacString = String(WiFi.macAddress());
 
 // InfluxDB Client Stuff
-RTC_DATA_ATTR struct Measurement // Data structure
+struct Measurement // Data structure
 {
     float moisture; // Percentage of Moisture compared to calibration
     int pump;       // State of Pump (on / off)
