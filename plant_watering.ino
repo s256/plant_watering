@@ -5,13 +5,15 @@ const int daylightOffset_sec = 3600;
 const long gmtOffset_sec = 3600;
 const char *ntpServer = "pool.ntp.org";
 // Firmware Version used for OTA
-const long long FW_VERSION = 202203082355; // YEARmonthDAYhourMINUTE
+const long long FW_VERSION = 202204031337; // YEARmonthDAYhourMINUTE
 // Sleep and Watering durations
 const int uS_TO_S_FACTOR = 1000000; // Conversion factor for micro seconds to seconds
 const int TIME_TO_SLEEP = 300;      // Time ESP32 will go to sleep (in seconds) (300 default)
 
 const int WATERING_DURATION = 1000 * 60 * 1; // defaults to 1000 * 60 * 1 -> 1 minute
 
+// Soil Moisture Limit
+const int MOIST_LIMIT = 50;
 // Data Batch size
 const int DATA_TRANSFER_BATCH_SIZE = 2; // transfer after this number of items have been collected
 
@@ -122,7 +124,7 @@ void loop()
     time(&m.time);
     Serial.print("Soil Moisture: ");
     Serial.println(String(soilmoisturepercent) + " %");
-    if ((soilmoisturepercent < 35) && (water_level == 1)) // if Soil is too dry, pump water for some duration
+    if ((soilmoisturepercent < MOIST_LIMIT) && (water_level == 1)) // if Soil is too dry, pump water for some duration
     {
         Serial.println("Soil is too dry, start watering");
         m.pump = 1;
